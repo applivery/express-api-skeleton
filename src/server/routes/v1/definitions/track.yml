@@ -5,11 +5,32 @@ definitions:
       request:
         description: Request
         type: object
-        example: {}
+        properties:
+          method:
+            description: Request method
+            type: string
+            example: get
+          url:
+            description: Request url
+            type: string
+            example: http://localhost
+          headers:
+            description: Request headers
+            type: string
+          body:
+            description: Request body
+            type: string
       response:
         description: Response
-        type: objet
-        example: {}
+        type: object
+        properties:
+          status:
+            description: Response status
+            type: string
+            example: 200
+          body:
+            description: Request body
+            type: string
       updatedAt:
         description: Last client update date
         type: date

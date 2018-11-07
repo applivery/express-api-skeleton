@@ -3,9 +3,10 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const cors = require('cors')
 const compression = require('compression')
+const routes = require('./routes')
+const tracking = require('./middlewares/tracking')
 const Debug = require('debug')
 const debug = require('debug')('AP:Index')
-const routes = require('./routes')
 
 const devMode = process.env.NODE_ENV === 'development'
 if (devMode) {
@@ -34,7 +35,9 @@ app.use('*', (req, res, next) => {
   debug('Request was made to: ' + req.method + ':' + req.originalUrl)
   return next()
 })
+app.use(tracking)
 app.use('/', routes)
+
 // End middlewares
 expressDeliver.errorHandler(app)
 

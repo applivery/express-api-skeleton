@@ -40,7 +40,8 @@
 
 - [x] Debug
 - [ ] Morgan
-- [ ] Transactions log
+- [x] Transactions log -> Tracking ['post', 'put', 'delete']
+  - [ ] Store user
 
 **Deployment**
 

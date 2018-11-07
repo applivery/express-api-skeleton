@@ -2,6 +2,7 @@
 const { ParamNotFound, EntityNotFound } = require('../exceptionPool')
 const SampleService = require('../services/sample')
 const SubSampleService = require('../services/subSample')
+const TrackService = require('../services/track')
 const debug = require('debug')('AP:Middleware:Entities')
 
 async function loadEntity(param, functionGetItem, req, res, next) {
@@ -36,4 +37,8 @@ exports.ensureSampleExists = async function(req, res, next) {
 exports.ensureSubSampleExists = async function(req, res, next) {
   debug('ensureSubSampleExists')
   await loadEntity('subSample', SubSampleService.getSubSample, req, res, next)
+}
+exports.ensureTrackExists = async function(req, res, next) {
+  debug('ensureTrackExists')
+  await loadEntity('track', TrackService.getTrack, req, res, next)
 }

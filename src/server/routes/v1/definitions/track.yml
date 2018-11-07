@@ -1,0 +1,74 @@
+definitions:
+  TrackModel:
+    type: object
+    properties:
+      request:
+        description: Request
+        type: object
+        example: {}
+      response:
+        description: Response
+        type: objet
+        example: {}
+      updatedAt:
+        description: Last client update date
+        type: date
+        example: 2018-10-10T19:58:03.486Z
+      createdAt:
+        description: Track creation date
+        type: date
+        example: 2018-10-10T18:44:22.582Z
+      __v:
+        description: Track version
+        type: string
+        example: 2
+
+  TrackResponse:
+    type: object
+    properties:
+      status:
+        description: Response status
+        type: boolean
+        example: true
+      data:
+        $ref: '#/definitions/TrackModel'
+
+  TracksResponse:
+    description: Array of clients
+    type: object
+    properties:
+      status:
+        description: Response status
+        type: boolean
+        example: true
+      data:
+        type: object
+        properties:
+          docs:
+            type: array
+            items:
+              $ref: '#/definitions/TrackModel'
+      totalDocs:
+        type: number
+        example: 10
+      limit:
+        type: number
+        example: 5
+      hasPrevPage:
+        type: boolean
+        example: false
+      hasNextPage:
+        type: boolean
+        example: false
+      page:
+        type: number
+        example: 1
+      totalPages:
+        type: number
+        example: 1
+      prevPage:
+        type: number
+        example: null
+      nextPage:
+        type: number
+        example: 2

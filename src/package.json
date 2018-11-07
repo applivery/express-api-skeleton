@@ -18,6 +18,7 @@
     "debug": "^4.1.0",
     "express": "^4.16.4",
     "express-deliver": "^1.0.0",
+    "express-mung": "^0.5.1",
     "mongoose": "^5.3.9",
     "mongoose-paginate-v2": "^1.0.12",
     "mongoose-timestamp": "^0.6.0",

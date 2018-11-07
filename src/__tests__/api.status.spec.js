@@ -1,15 +1,5 @@
-jest.mock('../../secrets', () => {
-  const parameters = require('../../__mocks__/secrets')
-  const testFile = require('path')
-    .basename(global.jasmine.testPath)
-    .replace('.spec.js', '')
-
-  parameters.mongo.database = 'applivery-test-' + testFile.replace('.', '-')
-  return parameters
-})
-
 const request = require('supertest')
-const app = require('../app')
+const app = require('../server/app')
 
 function getUrl() {
   return `/v1/status`

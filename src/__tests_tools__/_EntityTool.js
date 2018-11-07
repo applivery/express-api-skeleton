@@ -1,14 +1,17 @@
-const SampleService = require('../services/sample')
-const SampleModel = require('../models/sample')
-const SubSampleService = require('../services/subSample')
-const SubSampleModel = require('../models/subSample')
+const SampleService = require('../server/services/sample')
+const SampleModel = require('../server/models/sample')
+const SubSampleService = require('../server/services/subSample')
+const SubSampleModel = require('../server/models/subSample')
+const TrackModel = require('../server/models/track')
 
 module.exports = {
   async dropDatabase() {
     // await mongoose.connection.db.dropDatabase()
   },
   async cleanDatabaseBetweenTests() {
+    await SubSampleModel.remove({})
     await SampleModel.remove({})
+    await TrackModel.remove({})
     return null
   },
   async cleanDatabase() {

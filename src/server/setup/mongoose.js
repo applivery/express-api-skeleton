@@ -1,12 +1,27 @@
 const mongoose = require('mongoose')
-const secrets = require('../../secrets')
 const debug = require('debug')('AP:Utils:Mongoose')
 mongoose.Promise = global.Promise
 
+require('dotenv').config()
+const mongoConfig = {
+  user: process.env.MONGO_USER,
+  password: process.env.MONGO_PASSWORD,
+  database: process.env.MONGO_DATABASE,
+  server: process.env.MONGO_SERVER
+}
+const devTest = process.env.NODE_ENV === 'test'
+if (devTest) {
+  const testFile = require('path')
+    .basename(global.jasmine.testPath)
+    .replace('.spec.js', '')
+  mongoConfig.database = 'applivery-test-' + testFile.replace('.', '-')
+}
+debug('mongoConfig', mongoConfig)
+
 function generateUri36() {
   let uri = `mongodb+srv://`
-  uri += `${secrets.mongo.user}:${secrets.mongo.password}@`
-  uri += `${secrets.mongo.server}/${secrets.mongo.database}`
+  uri += `${mongoConfig.user}:${mongoConfig.password}@`
+  uri += `${mongoConfig.server}/${mongoConfig.database}`
   uri += `?retryWrites=true`
   return uri
 }

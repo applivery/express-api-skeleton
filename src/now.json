@@ -1,0 +1,14 @@
+{
+  "name": "express-api-skeleton",
+  "alias": "express-api-skeleton.now.sh",
+  "files": ["index.js", "server"],
+  "engines": {
+    "node": "8"
+  },
+  "env": {
+    "MONGO_USER": "@applivery-dev-mongo-user",
+    "MONGO_PASSWORD": "@applivery-dev-mongo-password",
+    "MONGO_DATABASE": "@applivery-dev-mongo-database",
+    "MONGO_SERVER": "@applivery-dev-mongo-server"
+  }
+}

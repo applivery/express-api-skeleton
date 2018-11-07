@@ -1,16 +1,6 @@
-jest.mock('../../secrets', () => {
-  const parameters = require('../../__mocks__/secrets')
-  const testFile = require('path')
-    .basename(global.jasmine.testPath)
-    .replace('.spec.js', '')
-
-  parameters.mongo.database = 'applivery-test-' + testFile.replace('.', '-')
-  return parameters
-})
-
 const EntityTool = require('../__tests_tools__/_EntityTool')
 const request = require('supertest')
-const app = require('../app')
+const app = require('../server/app')
 
 function getUrl({ sample }) {
   return `/v1/sample/${sample._id}/subSample`
@@ -20,7 +10,7 @@ function getItemUrl({ sample, subSample }) {
   return getUrl({ sample }) + '/' + subSample._id
 }
 
-describe.skip('SubSample Test', () => {
+describe('SubSample Test', () => {
   beforeAll(async done => {
     await EntityTool.cleanDatabase()
     done()

@@ -22,7 +22,10 @@ router.get('/api.json', (req, res) => {
 })
 router.use('/api-ui', swaggerUi.serve, swaggerUi.setup(swaggerSpecs, uiOptions))
 router.get('/api-ui2', (req, res) => {
-  res.sendFile(path.join(__dirname + '/../../html/swagger-ui.html'))
+  const devMode = process.env.NODE_ENV === 'development'
+  let file = 'swagger-ui.html'
+  if (devMode) file = 'swagger-ui-dev.html'
+  res.sendFile(path.join(__dirname + `/../../html/${file}`))
 })
 
 module.exports = router

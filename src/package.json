@@ -5,10 +5,15 @@
   "license": "MIT",
   "scripts": {
     "lint": "eslint .",
+    "start": "node index.js",
     "serve": "DEBUG=AP:* NODE_ENV=development nodemon index.js",
     "test": "NODE_ENV=test jest --verbose",
     "test-dev": "NODE_ENV=test jest --watch --verbose",
-    "test-coverage": "NODE_ENV=test jest --coverage"
+    "test-coverage": "NODE_ENV=test jest --coverage",
+    "deploy": "yarn now-deploy && yarn now-alias && yarn now-rm-old",
+    "now-deploy": "now --npm -n express-api-skeleton --regions bru1",
+    "now-alias": "now alias",
+    "now-rm-old": "now rm express-api-skeleton --safe --yes"
   },
   "dependencies": {
     "axios": "^0.18.0",
@@ -16,6 +21,7 @@
     "compression": "^1.7.3",
     "cors": "^2.8.5",
     "debug": "^4.1.0",
+    "dotenv": "^6.1.0",
     "express": "^4.16.4",
     "express-deliver": "^1.0.0",
     "express-mung": "^0.5.1",

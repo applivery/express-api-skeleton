@@ -151,7 +151,7 @@ router.put(
  *       200:
  *         description: Return empty object
  *         schema:
- *           $ref: '#/definitions/SubSampleDeleteResponse'
+ *           $ref: '#/definitions/DeleteResponse'
  *       403:
  *         $ref: '#/responses/AuthenticationFail'
  *       422:

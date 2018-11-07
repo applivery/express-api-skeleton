@@ -1,0 +1,12 @@
+definitions:
+  DeleteResponse:
+    type: object
+    properties:
+      status:
+        description: Response status
+        type: boolean
+        example: true
+      data:
+        description: Response data
+        type: object
+        example: {}

@@ -1,4 +1,4 @@
-# applivery-api-v2
+# express-api-skeleton
 
 ## Basic API Skeleton Features
 

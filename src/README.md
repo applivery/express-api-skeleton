@@ -6,7 +6,8 @@
 - **yarn start** _Launch server without hot-reloading_
 - **yarn test** _Run tests_
 - **yarn test-dev** _Run tests with watcher_
-- **yarn deploy** \*Deploy in now\*\*
+- **yarn test-coverage** _Calculate Code Coverage_
+- **yarn deploy** _Deploy in now_
 
 #### Urls and components
 

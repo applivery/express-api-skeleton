@@ -5,9 +5,9 @@
 **Architecture**
 
 - [x] Express-deliver
-- [x] Architecture: Route/controller/service/mongoose
-- [ ] Js more classes oriented
-- [ ] Nested Models
+- [x] Architecture: Route -> Controller -> Service -> Mongoose
+- [x] Nested Models
+- [ ] Classes oriented
 
 **Documentation**
 
@@ -23,8 +23,9 @@
 - [x] jest
 - [x] Basic Tests
 - [x] Basic Model Tests (CRUDs) with custom Database
+- [x] Basic Model Tests (CRUDs) with Mockingoose
 - [ ] Model Tests (CRUDs) with custom Database
-- [ ] Model Tests (CRUDs) with Mongoose or Mongo DB mocked
+- [ ] Model Tests (CRUDs) with Mockingoose
 
 **Authentication**
 
@@ -39,7 +40,7 @@
 
 - [x] Debug
 - [ ] Morgan
-- [ ] Transactions login
+- [ ] Transactions log
 
 **Deployment**
 

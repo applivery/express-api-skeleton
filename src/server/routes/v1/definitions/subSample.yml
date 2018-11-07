@@ -1,0 +1,95 @@
+definitions:
+  SubSampleData:
+    type: object
+    properties:
+      name:
+        description: SubSample name
+        required: true
+        type: string
+        example: Test SubSample
+
+  SubSampleModel:
+    type: object
+    properties:
+      _id:
+        description: SubSample identifier
+        type: string
+        example: 5bbe4886975e110f285f34e1
+      name:
+        description: SubSample name
+        type: string
+        example: Test SubSample
+      updatedAt:
+        description: Last client update date
+        type: date
+        example: 2018-10-10T19:58:03.486Z
+      createdAt:
+        description: SubSample creation date
+        type: date
+        example: 2018-10-10T18:44:22.582Z
+      __v:
+        description: SubSample version
+        type: string
+        example: 2
+
+  SubSampleResponse:
+    type: object
+    properties:
+      status:
+        description: Response status
+        type: boolean
+        example: true
+      data:
+        $ref: '#/definitions/SubSampleModel'
+
+  SubSampleDeleteResponse:
+    type: object
+    properties:
+      status:
+        description: Response status
+        type: boolean
+        example: true
+      data:
+        description: Response data
+        type: object
+        example: {}
+
+  SubSamplesResponse:
+    description: Array of clients
+    type: object
+    properties:
+      status:
+        description: Response status
+        type: boolean
+        example: true
+      data:
+        type: object
+        properties:
+          docs:
+            type: array
+            items:
+              $ref: '#/definitions/SubSampleModel'
+      totalDocs:
+        type: number
+        example: 10
+      limit:
+        type: number
+        example: 5
+      hasPrevPage:
+        type: boolean
+        example: false
+      hasNextPage:
+        type: boolean
+        example: false
+      page:
+        type: number
+        example: 1
+      totalPages:
+        type: number
+        example: 1
+      prevPage:
+        type: number
+        example: null
+      nextPage:
+        type: number
+        example: 2

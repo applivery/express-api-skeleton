@@ -1,0 +1,30 @@
+{
+    "editor.formatOnSave": true,
+    // "jest.rootPath": "source",
+    "editor.tabSize": 2,
+    "eslint.validate": [
+        "javascript",
+        "javascriptreact",
+        {
+            "language": "vue",
+            "autoFix": true
+        },
+        {
+            "language": "html",
+            "autoFix": true
+        }
+    ],
+    "eslint.autoFixOnSave": true,
+    "vetur.validation.template": false,
+    "prettier.singleQuote": true,
+    "prettier.semi": false,
+    "git.ignoreLimitWarning": true
+    /*
+  "vetur.format.defaultFormatter.html": "js-beautify-html",
+  "vetur.format.defaultFormatterOptions": {
+    "js-beautify-html": {
+      "wrap_attributes": "force-aligned"
+    }
+  }
+  */
+}

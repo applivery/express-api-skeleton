@@ -1,0 +1,95 @@
+responses:
+  AuthenticationFail:
+    description: Authentication fail
+    schema:
+      type: object
+      properties:
+        status:
+          description: Response status
+          type: boolean
+          example: false
+        error:
+          type: object
+          properties:
+            code:
+              description: Response code
+              type: number
+              example: 2001
+            message:
+              description: Error message
+              type: string
+              example: Token not valid
+            data:
+              type: object
+
+  ParamMisssing:
+    description: Param misssing
+    schema:
+      type: object
+      properties:
+        status:
+          description: Response status
+          type: boolean
+          example: false
+        error:
+          type: object
+          properties:
+            code:
+              description: Response code
+              type: number
+              example: 4001
+            message:
+              description: Error message
+              type: string
+              example: Entity not found
+            data:
+              type: object
+              properties:
+                entity:
+                  description: Entity missing
+                  type: string
+                  example: sample
+                id:
+                  description: Entity id
+                  type: string
+                  example: 5be1c5c81da4312453a663011
+                err:
+                  description: Extra error info
+                  type: string
+                  example: Extra information
+
+  EntityMisssing:
+    description: Entity misssing
+    schema:
+      type: object
+      properties:
+        status:
+          description: Response status
+          type: boolean
+          example: false
+        error:
+          type: object
+          properties:
+            code:
+              description: Response code
+              type: number
+              example: 4001
+            message:
+              description: Error message
+              type: string
+              example: Entity not found
+            data:
+              type: object
+              properties:
+                entity:
+                  description: Entity missing
+                  type: string
+                  example: sample
+                id:
+                  description: Entity id
+                  type: string
+                  example: 5be1c5c81da4312453a663011
+                err:
+                  description: Extra error info
+                  type: string
+                  example: Extra information

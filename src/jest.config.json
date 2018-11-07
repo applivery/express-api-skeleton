@@ -1,0 +1,8 @@
+{
+  "name": "Applivery API - v2",
+  "jest": {
+    "verbose": true,
+    "testRegex": "(/__tests__/(\\.|/)(test|spec))\\.jsx?$",
+    "showCoverageOnLoad": true
+  }
+}

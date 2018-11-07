@@ -1,0 +1,26 @@
+definitions:
+  StatusModel:
+    type: object
+    properties:
+      name:
+        description: Api Name
+        type: string
+        example: api
+      version:
+        description: Api version
+        type: string
+        example: 1.0.0
+      ip:
+        description: Server Ip
+        type: string
+        example: 8.8.8.8
+
+  StatusResponse:
+    type: object
+    properties:
+      status:
+        description: Response status
+        type: boolean
+        example: true
+      data:
+        $ref: '#/definitions/StatusModel'

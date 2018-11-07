@@ -1,0 +1,9 @@
+parameters:
+  # Query String Values
+  sampleId:
+    name: sampleId
+    description: Sample identifier
+    in: path
+    required: true
+    schema:
+      type: string

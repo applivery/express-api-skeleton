@@ -2558,6 +2558,10 @@ mongoose-timestamp@^0.6.0:
   dependencies:
     defaults "^1.0.3"
 
+mongoose-to-swagger@^0.0.4:
+  version "0.0.4"
+  resolved "https://registry.yarnpkg.com/mongoose-to-swagger/-/mongoose-to-swagger-0.0.4.tgz#2db9e65ead477bd17660c75451a11c6ffc802695"
+
 mongoose@^5.3.9:
   version "5.3.9"
   resolved "https://registry.yarnpkg.com/mongoose/-/mongoose-5.3.9.tgz#3ef2cde3e9201555de9d06f317a6f76605638e25"

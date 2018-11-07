@@ -7,3 +7,17 @@ parameters:
     required: true
     schema:
       type: string
+  subSampleId:
+    name: subSampleId
+    description: SubSample identifier
+    in: path
+    required: true
+    schema:
+      type: string
+  trackId:
+    name: trackId
+    description: Track identifier
+    in: path
+    required: true
+    schema:
+      type: string

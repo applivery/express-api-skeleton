@@ -29,3 +29,4 @@ The api is serve in http://localhost:8082
 
 - OpenApi definition: http://localhost:8082/v1/doc/api.json
 - Swagger UI: http://localhost:8082/v1/doc/api-ui
+- ReDoc UI: http://localhost:8082/v1/doc/api-ui2

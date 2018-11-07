@@ -19,7 +19,7 @@ async function track(body, req, res) {
     }
   }
   const trackMethodArray = ['get', 'post', 'put', 'delete']
-  const excludePath = ['/v1/track']
+  const excludePath = ['/v1/track', '/v1/doc/']
   if (trackMethodArray.includes(data.request.method.toLowerCase())) {
     const exclude = excludePath.filter(path => {
       return data.request.url.includes(path)

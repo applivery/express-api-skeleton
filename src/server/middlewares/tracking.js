@@ -18,10 +18,15 @@ async function track(body, req, res) {
       body: JSON.stringify(body)
     }
   }
-  const trackMethodArray = ['post', 'put', 'delete']
+  const trackMethodArray = ['get', 'post', 'put', 'delete']
+  const excludePath = ['/v1/track']
   if (trackMethodArray.includes(data.request.method.toLowerCase())) {
-    debug('Request Tracked')
-    await TrackService.addTrack({ data })
+    const exclude = excludePath.filter(path => {
+      return data.request.url.includes(path)
+    })
+    if (exclude.length === 0) {
+      await TrackService.addTrack({ data })
+    }
   }
 
   return body

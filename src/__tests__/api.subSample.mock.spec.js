@@ -1,7 +1,7 @@
 const mockingoose = require('mockingoose').default
 const MockTool = require('../__tests_tools__/MockTool')
 const request = require('supertest')
-const app = require('../server/app')
+const app = require('../app/app')
 
 function getUrl({ sample }) {
   return `/v1/sample/${sample._id}/subSample`

@@ -1,5 +1,5 @@
-const SampleModel = require('../server/models/sample.model')
-const SubSampleModel = require('../server/models/subSample.model')
+const SampleModel = require('../app/models/sample.model')
+const SubSampleModel = require('../app/models/subSample.model')
 
 module.exports = {
   // Sample

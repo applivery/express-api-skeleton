@@ -1,6 +1,6 @@
 const EntityTool = require('../__tests_tools__/_EntityTool')
 const request = require('supertest')
-const app = require('../server/app')
+const app = require('../app/app')
 
 function getUrl({ sample }) {
   return `/v1/sample/${sample._id}/subSample`

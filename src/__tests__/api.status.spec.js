@@ -1,5 +1,5 @@
 const request = require('supertest')
-const app = require('../server/app')
+const app = require('../app/app')
 
 function getUrl() {
   return `/v1/status`

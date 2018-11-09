@@ -37,7 +37,7 @@ async function getDefinition(req, res) {
 
   const docOptions = {
     swaggerDefinition,
-    apis: ['./server/routes/v1/definitions/*.yml', './server/routes/v1/*.js']
+    apis: ['./app/routes/v1/definitions/*.yml', './app/routes/v1/*.js']
   }
 
   // Initialize swagger-jsdoc -> returns validated swagger spec in json format

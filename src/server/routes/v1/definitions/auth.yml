@@ -1,0 +1,74 @@
+definitions:
+  TokenResponse:
+    type: object
+    properties:
+      tokenType:
+        description: tokenType
+        required: true
+        type: string
+        example: Bearer
+      accessToken:
+        description: accessToken
+        required: true
+        type: string
+      refreshToken:
+        description: accessToken
+        required: true
+        type: string
+      expiresIn:
+        description: string
+        required: true
+        type: string
+        example: '2018-11-09T21:48:34.307Z'
+
+  AuthData:
+    type: object
+    properties:
+      email:
+        description: Email
+        required: true
+        type: string
+        example: test@test.com
+      password:
+        description: password
+        required: true
+        type: string
+        example: myPassword
+
+  RefreshData:
+    type: object
+    properties:
+      email:
+        description: Email
+        required: true
+        type: string
+        example: test@test.com
+      refreshToken:
+        description: refreshToken
+        required: true
+        type: string
+
+  AuthResponse:
+    type: object
+    properties:
+      status:
+        description: Response status
+        type: boolean
+        example: true
+      data:
+        type: object
+        properties:
+          token:
+            $ref: '#/definitions/TokenResponse'
+          user:
+            $ref: '#/definitions/UserSmallModel'
+
+  RefreshResponse:
+    type: object
+    properties:
+      status:
+        description: Response status
+        type: boolean
+        example: true
+      data:
+        $ref: '#/definitions/TokenResponse'

@@ -1,44 +1,40 @@
 const mongoose = require('mongoose')
+const { mongo, env } = require('./vars')
 const debug = require('debug')('AP:Utils:Mongoose')
-mongoose.Promise = global.Promise
 
-require('dotenv').config()
-const mongoConfig = {
-  user: process.env.MONGO_USER,
-  password: process.env.MONGO_PASSWORD,
-  database: process.env.MONGO_DATABASE,
-  server: process.env.MONGO_SERVER
-}
-const devTest = process.env.NODE_ENV === 'test'
-if (devTest) {
-  const testFile = require('path')
-    .basename(global.jasmine.testPath)
-    .replace('.spec.js', '')
-  mongoConfig.database = 'applivery-test-' + testFile.replace('.', '-')
-}
-debug('mongoConfig', mongoConfig)
+// set mongoose Promise to Bluebird
+mongoose.Promise = Promise
 
-function generateUri36() {
-  let uri = `mongodb+srv://`
-  uri += `${mongoConfig.user}:${mongoConfig.password}@`
-  uri += `${mongoConfig.server}/${mongoConfig.database}`
-  uri += `?retryWrites=true`
-  return uri
+// Exit application on error
+mongoose.connection.on('error', err => {
+  console.error(`MongoDB connection error: ${err}`)
+  process.exit(-1)
+})
+
+// print mongoose logs in dev env
+if (env === 'development') {
+  mongoose.set('debug', true)
 }
 
-const uri = generateUri36()
-debug('pre-mongoose-init')
-const options = { useNewUrlParser: true }
-
-mongoose
-  .connect(
-    uri,
-    options
-  )
-  .then(() => {
-    debug('Mongo Connection success')
-    return null
-  })
-  .catch(err => {
-    debug('Mongo Connection error:', err)
-  })
+/**
+ * Connect to mongo db
+ *
+ * @returns {object} Mongoose connection
+ * @public
+ */
+exports.connect = () => {
+  mongoose
+    .connect(
+      mongo.uri,
+      { keepAlive: 1, useNewUrlParser: true }
+    )
+    .then(() => {
+      debug('Mongo Connection success')
+      return null
+    })
+    .catch(err => {
+      debug('Mongo Connection error:', err)
+      throw err
+    })
+  return mongoose.connection
+}

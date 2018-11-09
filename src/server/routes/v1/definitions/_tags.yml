@@ -1,5 +1,11 @@
 tags:
   - name: Status
     description: Status
+  - name: Auth
+    description: Auth
+  - name: User
+    description: User
   - name: Sample
     description: Sample
+  - name: SubSample
+    description: SubSample

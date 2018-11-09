@@ -1,5 +1,5 @@
 'use strict'
-const SampleModel = require('../models/sample')
+const SampleModel = require('../models/sample.model')
 const debug = require('debug')('AP:Service:Sample')
 
 async function getSamples({ limit }) {

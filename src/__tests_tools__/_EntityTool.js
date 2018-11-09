@@ -1,8 +1,8 @@
-const SampleService = require('../server/services/sample')
-const SampleModel = require('../server/models/sample')
-const SubSampleService = require('../server/services/subSample')
-const SubSampleModel = require('../server/models/subSample')
-const TrackModel = require('../server/models/track')
+const SampleService = require('../server/services/sample.service')
+const SampleModel = require('../server/models/sample.model')
+const SubSampleService = require('../server/services/subSample.service')
+const SubSampleModel = require('../server/models/subSample.model')
+const TrackModel = require('../server/models/track.model')
 
 module.exports = {
   async dropDatabase() {

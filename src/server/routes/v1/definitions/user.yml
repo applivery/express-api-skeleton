@@ -1,0 +1,85 @@
+definitions:
+  UserSmallModel:
+    type: object
+    properties:
+      id:
+        description: User Id
+        required: true
+        type: string
+      email:
+        description: User Email
+        required: true
+        type: string
+      role:
+        description: User Role
+        required: true
+        type: string
+      createdAt:
+        description: string
+        required: true
+        type: string
+        example: '2018-11-09T21:48:34.307Z'
+
+  UserData:
+    type: object
+    properties:
+      email:
+        description: Email
+        required: true
+        type: string
+        example: test@test.com
+      password:
+        description: password
+        required: true
+        type: string
+        example: myPassword
+
+  UserResponse:
+    type: object
+    properties:
+      status:
+        description: Response status
+        type: boolean
+        example: true
+      data:
+        $ref: '#/definitions/UserSmallModel'
+
+  UsersResponse:
+    description: Array of clients
+    type: object
+    properties:
+      status:
+        description: Response status
+        type: boolean
+        example: true
+      data:
+        type: object
+        properties:
+          docs:
+            type: array
+            items:
+              $ref: '#/definitions/UserSmallModel'
+      totalDocs:
+        type: number
+        example: 10
+      limit:
+        type: number
+        example: 5
+      hasPrevPage:
+        type: boolean
+        example: false
+      hasNextPage:
+        type: boolean
+        example: false
+      page:
+        type: number
+        example: 1
+      totalPages:
+        type: number
+        example: 1
+      prevPage:
+        type: number
+        example: null
+      nextPage:
+        type: number
+        example: 2

@@ -1,7 +1,7 @@
 'use strict'
 const express = require('express')
 const expressDeliver = require('express-deliver')
-const StatusController = require('../../controllers/status')
+const StatusController = require('../../controllers/status.controller')
 
 const router = express.Router()
 expressDeliver(router)

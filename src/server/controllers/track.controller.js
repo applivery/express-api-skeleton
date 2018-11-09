@@ -1,5 +1,5 @@
 'use strict'
-const TrackService = require('../services/track')
+const TrackService = require('../services/track.service')
 const debug = require('debug')('AP:Controller:Track')
 
 async function getTracks(req, res) {

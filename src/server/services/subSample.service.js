@@ -1,5 +1,5 @@
 'use strict'
-const SubSampleModel = require('../models/subSample')
+const SubSampleModel = require('../models/subSample.model')
 const debug = require('debug')('AP:Service:SubSample')
 
 async function getSubSamples({ sample, limit }) {

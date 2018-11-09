@@ -1,5 +1,5 @@
 'use strict'
-const TrackModel = require('../models/track')
+const TrackModel = require('../models/track.model')
 const debug = require('debug')('AP:Service:Track')
 
 async function getTracks({ limit }) {
@@ -10,7 +10,7 @@ async function getTracks({ limit }) {
   return await TrackModel.paginate(query, { page: 1, limit, sort })
 }
 async function addTrack({ data }) {
-  debug('addTrack', { data })
+  debug('addTrack')
   const item = new TrackModel(data)
   await item.save()
   return item

@@ -1,5 +1,5 @@
 'use strict'
-const SubSampleService = require('../services/subSample')
+const SubSampleService = require('../services/subSample.service')
 const debug = require('debug')('AP:Controller:SubSample')
 
 async function getSubSamples(req, res) {

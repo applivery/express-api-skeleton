@@ -5,19 +5,22 @@ parameters:
     description: Sample identifier
     in: path
     required: true
-    schema:
-      type: string
+    type: string
   subSampleId:
     name: subSampleId
     description: SubSample identifier
     in: path
     required: true
-    schema:
-      type: string
+    type: string
   trackId:
     name: trackId
     description: Track identifier
     in: path
     required: true
-    schema:
-      type: string
+    type: string
+  userId:
+    name: trackId
+    description: Track identifier
+    in: path
+    required: true
+    type: string

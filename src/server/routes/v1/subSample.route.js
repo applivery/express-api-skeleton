@@ -1,9 +1,10 @@
 'use strict'
 const express = require('express')
 const expressDeliver = require('express-deliver')
-const SubSampleRoutes = require('./subSample')
-const SampleController = require('../../controllers/sample')
-const { ensureSampleExists } = require('../../middlewares/entities')
+const SubSampleController = require('../../controllers/subSample.controller')
+const {
+  ensureSubSampleExists
+} = require('../../middlewares/entities.middleware')
 
 const router = express.Router()
 expressDeliver(router)
@@ -11,65 +12,11 @@ expressDeliver(router)
 /**
  * @swagger
  *
- * /sample:
+ * /sample/{sampleId}/subSample:
  *   get:
- *     summary: Get list of samples
- *     description: Get list of samples
- *     tags: [Sample]
- *     produces:
- *     - application/json
- *     security:
- *     - ApiKeyAuth: []
- *     responses:
- *       200:
- *         description: Return array of samples
- *         schema:
- *           $ref: '#/definitions/SamplesResponse'
- *       403:
- *         $ref: '#/responses/AuthenticationFail'
- *       422:
- *         $ref: '#/responses/ParamMisssing'
- */
-router.get('/', SampleController.getSamples)
-
-/**
- * @swagger
- *
- * /sample:
- *   post:
- *     summary: Add new sample
- *     description: Add new sample
- *     tags: [Sample]
- *     produces:
- *     - application/json
- *     parameters:
- *     - name: body
- *       in: body
- *       required: true
- *       schema:
- *         $ref: '#/definitions/SampleData'
- *     security:
- *     - ApiKeyAuth: []
- *     responses:
- *       200:
- *         description: Return sample created
- *         schema:
- *           $ref: '#/definitions/SampleResponse'
- *       403:
- *         $ref: '#/responses/AuthenticationFail'
- *       422:
- *         $ref: '#/responses/ParamMisssing'
- */
-router.post('/', SampleController.addSample)
-
-/**
- * @swagger
- *
- * /sample/{sampleId}:
- *   get:
- *     summary: Get sample
- *     description: Get sample
- *     tags: [Sample]
+ *     summary: Get list of subSamples
+ *     description: Get list of subSamples
+ *     tags: [SubSample]
  *     produces:
  *     - application/json
  *     parameters:
@@ -78,69 +25,128 @@ router.post('/', SampleController.addSample)
  *     - ApiKeyAuth: []
  *     responses:
  *       200:
- *         description: Return sample
+ *         description: Return array of subSamples
  *         schema:
- *           $ref: '#/definitions/SampleResponse'
+ *           $ref: '#/definitions/SubSamplesResponse'
+ *       403:
+ *         $ref: '#/responses/AuthenticationFail'
+ *       422:
+ *         $ref: '#/responses/ParamMisssing'
+ */
+router.get('/', SubSampleController.getSubSamples)
+
+/**
+ * @swagger
+ *
+ * /sample/{sampleId}/subSample:
+ *   post:
+ *     summary: Add new subSample
+ *     description: Add new subSample
+ *     tags: [SubSample]
+ *     produces:
+ *     - application/json
+ *     parameters:
+ *     - $ref: '#/parameters/sampleId'
+ *     - name: body
+ *       in: body
+ *       required: true
+ *       schema:
+ *         $ref: '#/definitions/SubSampleData'
+ *     security:
+ *     - ApiKeyAuth: []
+ *     responses:
+ *       200:
+ *         description: Return subSample created
+ *         schema:
+ *           $ref: '#/definitions/SubSampleResponse'
+ *       403:
+ *         $ref: '#/responses/AuthenticationFail'
+ *       422:
+ *         $ref: '#/responses/ParamMisssing'
+ */
+router.post('/', SubSampleController.addSubSample)
+
+/**
+ * @swagger
+ *
+ * /sample/{sampleId}/subSample/{subSampleId}:
+ *   get:
+ *     summary: Get subSample
+ *     description: Get subSample
+ *     tags: [SubSample]
+ *     produces:
+ *     - application/json
+ *     parameters:
+ *     - $ref: '#/parameters/sampleId'
+ *     - $ref: '#/parameters/subSampleId'
+ *     security:
+ *     - ApiKeyAuth: []
+ *     responses:
+ *       200:
+ *         description: Return subSample
+ *         schema:
+ *           $ref: '#/definitions/SubSampleResponse'
  *       403:
  *         $ref: '#/responses/AuthenticationFail'
  *       422:
  *         $ref: '#/responses/ParamMisssing'
  */
 router.get(
-  '/:sampleId',
-  ensureSampleExists,
-  // md_entities.ensureUserIsSampleManager,
-  SampleController.getSample
+  '/:subSampleId',
+  ensureSubSampleExists,
+  // md_entities.ensureUserIsSubSampleManager,
+  SubSampleController.getSubSample
 )
 
 /**
  * @swagger
  *
- * /sample/{sampleId}:
+ * /sample/{sampleId}/subSample/{subSampleId}:
  *   put:
- *     summary: Update sample
- *     description: Update sample
- *     tags: [Sample]
+ *     summary: Update subSample
+ *     description: Update subSample
+ *     tags: [SubSample]
  *     produces:
  *     - application/json
  *     parameters:
  *     - $ref: '#/parameters/sampleId'
+ *     - $ref: '#/parameters/subSampleId'
  *     - name: body
  *       in: body
  *       required: true
  *       schema:
- *         $ref: '#/definitions/SampleData'
+ *         $ref: '#/definitions/SubSampleData'
  *     security:
  *       - ApiKeyAuth: []
  *     responses:
  *       200:
- *         description: Return sample updated
+ *         description: Return subSample updated
  *         schema:
- *           $ref: '#/definitions/SampleResponse'
+ *           $ref: '#/definitions/SubSampleResponse'
  *       403:
  *         $ref: '#/responses/AuthenticationFail'
  *       422:
  *         $ref: '#/responses/ParamMisssing'
  */
 router.put(
-  '/:sampleId',
-  ensureSampleExists,
-  // md_entities.ensureUserIsSampleManager,
-  SampleController.updateSample
+  '/:subSampleId',
+  ensureSubSampleExists,
+  // md_entities.ensureUserIsSubSampleManager,
+  SubSampleController.updateSubSample
 )
 
 /**
  * @swagger
  *
- * /sample/{sampleId}:
+ * /sample/{sampleId}/subSample/{subSampleId}:
  *   delete:
- *     summary: Delete sample
- *     description: Delete sample
- *     tags: [Sample]
+ *     summary: Delete subSample
+ *     description: Delete subSample
+ *     tags: [SubSample]
  *     produces:
  *     - application/json
  *     parameters:
- *     - $ref: '#/parameters/sampleId'
+ *     - $ref: '#/parameters/subSampleId'
  *     security:
  *     - ApiKeyAuth: []
  *     responses:
@@ -154,17 +160,10 @@ router.put(
  *         $ref: '#/responses/ParamMisssing'
  */
 router.delete(
-  '/:sampleId',
-  ensureSampleExists,
-  // md_entities.ensureUserIsSampleManager,
-  SampleController.deleteSample
-)
-
-router.use(
-  '/:sampleId/subSample',
-  ensureSampleExists,
-  // md_entities.ensureUserIsClientManager,
-  SubSampleRoutes
+  '/:subSampleId',
+  ensureSubSampleExists,
+  // md_entities.ensureUserIsSubSampleManager,
+  SubSampleController.deleteSubSample
 )
 
 module.exports = router

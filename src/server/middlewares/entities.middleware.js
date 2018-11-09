@@ -1,8 +1,8 @@
 'user strict'
 const { ParamNotFound, EntityNotFound } = require('../exceptionPool')
-const SampleService = require('../services/sample')
-const SubSampleService = require('../services/subSample')
-const TrackService = require('../services/track')
+const SampleService = require('../services/sample.service')
+const SubSampleService = require('../services/subSample.service')
+const TrackService = require('../services/track.service')
 const debug = require('debug')('AP:Middleware:Entities')
 
 async function loadEntity(param, functionGetItem, req, res, next) {

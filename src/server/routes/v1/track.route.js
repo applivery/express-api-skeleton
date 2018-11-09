@@ -1,8 +1,8 @@
 'use strict'
 const express = require('express')
 const expressDeliver = require('express-deliver')
-const TrackController = require('../../controllers/track')
-const { ensureTrackExists } = require('../../middlewares/entities')
+const TrackController = require('../../controllers/track.controller')
+const { ensureTrackExists } = require('../../middlewares/entities.middleware')
 
 const router = express.Router()
 expressDeliver(router)

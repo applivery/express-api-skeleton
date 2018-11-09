@@ -1,8 +1,11 @@
 'use strict'
-const SampleService = require('../services/sample')
+const SampleService = require('../services/sample.service')
 const debug = require('debug')('AP:Controller:Sample')
 
 async function getSamples(req, res) {
+  debug('register 1')
+  const error = { error: 'register' }
+  throw error
   debug('getSamples')
   return await SampleService.getSamples({})
 }

@@ -3,7 +3,7 @@ const express = require('express')
 const expressDeliver = require('express-deliver')
 const swaggerUi = require('swagger-ui-express')
 const path = require('path')
-const SwaggerController = require('../../controllers/swagger')
+const SwaggerController = require('../../controllers/swagger.controller')
 const debug = require('debug')('AP:Routes:Swagger')
 
 const router = express.Router()

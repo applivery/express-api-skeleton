@@ -1,33 +1,22 @@
 'use strict'
-const TrackModel = require('../models/track.model')
+const Track = require('../models/track.model')
 const debug = require('debug')('AP:Service:Track')
 
-async function getTracks({ limit }) {
-  debug('getTracks', { limit })
-  const query = {}
-  const sort = { _id: -1 }
-  if (!limit) limit = 100
-  return await TrackModel.paginate(query, { page: 1, limit, sort })
+exports.list = async ({ query }) => {
+  debug('list', { query })
+  return await Track.list({ query })
 }
-async function addTrack({ data }) {
-  debug('addTrack')
-  const item = new TrackModel(data)
-  await item.save()
-  return item
+exports.get = async ({ id }) => {
+  debug('get', { id })
+  return await Track.get(id)
 }
-async function getTrack({ id }) {
-  debug('getTrack', { id })
-  return await TrackModel.findOne({ _id: id })
+exports.create = async ({ data }) => {
+  debug('create', { data })
+  const item = new Track(data)
+  const savedItem = await item.save()
+  return savedItem
 }
-async function deleteTrack({ track }) {
-  debug('deleteTrack', { track })
-  await track.remove()
-  return {}
-}
-
-module.exports = {
-  getTracks,
-  addTrack,
-  getTrack,
-  deleteTrack
+exports.remove = async ({ track }) => {
+  debug('remove', { track })
+  return await track.remove()
 }

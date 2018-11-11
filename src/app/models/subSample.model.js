@@ -40,19 +40,11 @@ EntitySchema.statics = {
     return await this.paginate(filter, { page, limit, sort })
   },
   async get(id) {
-    try {
-      let subSample
-
-      if (mongoose.Types.ObjectId.isValid(id)) {
-        subSample = await this.findById(id).exec()
-      }
-      if (subSample) {
-        return subSample
-      }
-      throw new EntityNotFound({ entity: 'subSample', id })
-    } catch (error) {
-      throw error
+    if (mongoose.Types.ObjectId.isValid(id)) {
+      const subSample = await this.findById(id).exec()
+      if (subSample) return subSample
     }
+    throw new EntityNotFound({ entity: 'subSample', id })
   }
 }
 

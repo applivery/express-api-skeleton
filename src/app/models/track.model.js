@@ -42,11 +42,45 @@ const ResponseSchema = Schema(
 )
 const EntitySchema = Schema({
   request: RequestSchema,
-  response: ResponseSchema
+  response: ResponseSchema,
+  user: { type: Schema.Types.ObjectId, ref: 'User' }
 })
-EntitySchema.plugin(timestamps)
-EntitySchema.plugin(mongoosePaginate)
 EntitySchema.pre('remove', async function() {
   debug('Track Pre Remove')
 })
+
+EntitySchema.method({
+  transform() {
+    const transformed = {}
+    const fields = ['id', 'user', 'request', 'response', 'createdAt']
+
+    fields.forEach(field => {
+      transformed[field] = this[field]
+    })
+
+    return transformed
+  }
+})
+
+EntitySchema.statics = {
+  async list({ query }) {
+    debug('list', { query })
+    const filter = {}
+    if (query.name) filter.name = query.name
+    const limit = query.limit || 100
+    const page = query.page || 1
+    const sort = { createdAt: -1 }
+    const populate = [{ path: 'user', select: ['email'] }]
+    return await this.paginate(filter, { page, limit, sort, populate })
+  },
+  async get(id) {
+    if (mongoose.Types.ObjectId.isValid(id)) {
+      const track = await this.findById(id).exec()
+      if (track) return track
+    }
+    throw new EntityNotFound({ entity: 'track', id })
+  }
+}
+EntitySchema.plugin(timestamps)
+EntitySchema.plugin(mongoosePaginate)
 module.exports = mongoose.model('Track', EntitySchema)

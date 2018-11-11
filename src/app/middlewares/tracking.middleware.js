@@ -5,8 +5,11 @@ const debug = require('debug')('AP:Middleware:tracking')
 
 /* Remove any classified information from the response. */
 async function track(body, req, res) {
-  var fullUrl = req.protocol + '://' + req.get('host') + req.originalUrl
+  const fullUrl = req.protocol + '://' + req.get('host') + req.originalUrl
+  const user = req.user
+  debug('USER', user)
   const data = {
+    user,
     request: {
       method: String(req.method),
       url: String(fullUrl),
@@ -26,7 +29,7 @@ async function track(body, req, res) {
       return data.request.url.includes(path)
     })
     if (exclude.length === 0) {
-      await TrackService.addTrack({ data })
+      await TrackService.create({ data })
     }
   }
 

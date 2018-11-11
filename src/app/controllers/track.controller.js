@@ -1,17 +1,24 @@
 'use strict'
-const TrackService = require('../services/track.service')
+const service = require('../services/track.service')
 const debug = require('debug')('AP:Controller:Track')
 
-async function getTracks(req, res) {
-  debug('getTracks')
-  return await TrackService.getTracks({})
-}
-async function getTrack(req, res) {
-  debug('getTrack')
-  return req.entities.track
+exports.load = (req, res, next, id) => {
+  service
+    .get({ id })
+    .then(track => {
+      debug('track', track)
+      if (!track) throw new EntityNotFound({ entity: 'track', id: id })
+      req.locals = { track }
+      return next()
+    })
+    .catch(next)
 }
 
-module.exports = {
-  getTracks,
-  getTrack
+exports.list = async (req, res) => {
+  debug('getTracks')
+  const query = req.query
+  const items = await service.list({ query })
+  items.docs = items.docs.map(item => item.transform())
+  return items
 }
+exports.get = async (req, res) => req.locals.track.transform()

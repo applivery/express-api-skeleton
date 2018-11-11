@@ -16,7 +16,7 @@ expressDeliver(router)
 router.use('/status', StatusRoutes)
 router.use('/doc', SwaggerRoutes)
 router.use('/samples', authorize(), SampleRoutes)
-router.use('/track', TrackRoutes)
+router.use('/track', authorize(), TrackRoutes)
 
 router.use('/users', userRoutes)
 router.use('/auth', authRoutes)

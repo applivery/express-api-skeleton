@@ -1,11 +1,17 @@
 'use strict'
 const express = require('express')
+const validate = require('express-validation')
 const expressDeliver = require('express-deliver')
-const TrackController = require('../../controllers/track.controller')
-const { ensureTrackExists } = require('../../middlewares/entities.middleware')
+const controller = require('../../controllers/track.controller')
+const { listTracks } = require('../../validations/track.validation')
 
 const router = express.Router()
 expressDeliver(router)
+
+/**
+ * Load user when API with userId route parameter is hit
+ */
+router.param('tackId', controller.load)
 
 /**
  * @swagger
@@ -29,7 +35,7 @@ expressDeliver(router)
  *       422:
  *         $ref: '#/responses/ParamMisssing'
  */
-router.get('/', TrackController.getTracks)
+router.get('/', validate(listTracks), controller.list)
 
 /**
  * @swagger
@@ -55,11 +61,6 @@ router.get('/', TrackController.getTracks)
  *       422:
  *         $ref: '#/responses/ParamMisssing'
  */
-router.get(
-  '/:trackId',
-  ensureTrackExists,
-  // md_entities.ensureUserIsTrackManager,
-  TrackController.getTrack
-)
+router.get('/:trackId', controller.get)
 
 module.exports = router

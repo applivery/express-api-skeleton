@@ -137,19 +137,11 @@ userSchema.statics = {
    * @returns {Promise<User, APIError>}
    */
   async get(id) {
-    try {
-      let user
-
-      if (mongoose.Types.ObjectId.isValid(id)) {
-        user = await this.findById(id).exec()
-      }
-      if (user) {
-        return user
-      }
-      throw new EntityNotFound({ entity: 'user', id })
-    } catch (error) {
-      throw error
+    if (mongoose.Types.ObjectId.isValid(id)) {
+      const user = await this.findById(id).exec()
+      if (user) return user
     }
+    throw new EntityNotFound({ entity: 'user', id })
   },
 
   /**

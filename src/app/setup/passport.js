@@ -22,7 +22,7 @@ const jwt = async (payload, done) => {
 
 const oAuth = service => async (token, done) => {
   try {
-    const userData = await authProviders[service](token)
+    const userData = await authService[service](token)
     const user = await User.oAuthLogin(userData)
     return done(null, user)
   } catch (err) {

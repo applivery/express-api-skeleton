@@ -19,9 +19,10 @@ const handleJWT = (req, res, next, roles) => async (err, user, info) => {
 
   try {
     if (error || !user) {
-      if (error instanceof TokenExpiredError) {
+      if (error.message === 'jwt expired') {
         return next(new TokenExpired())
       }
+      debug('error.message', error.message)
       throw error
     }
     await logIn(user, { session: false })

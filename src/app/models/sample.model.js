@@ -2,6 +2,7 @@
 const mongoose = require('mongoose')
 const timestamps = require('mongoose-timestamp')
 const mongoosePaginate = require('mongoose-paginate-v2')
+const { EntityNotFound } = require('../exceptionPool')
 const debug = require('debug')('AP:Models:Sample')
 
 const Schema = mongoose.Schema
@@ -9,22 +10,60 @@ const EntitySchema = Schema({
   name: {
     type: String,
     required: true
-  },
-  subSamples: [{ type: Schema.Types.ObjectId, ref: 'SubSample' }]
-})
-EntitySchema.plugin(timestamps)
-EntitySchema.plugin(mongoosePaginate)
-EntitySchema.pre('remove', async function() {
-  debug('Sample Pre Remove')
-  if (this.subSamples) {
-    await Promise.all(
-      this.subSamples.map(async itemId => {
-        debug('Pre Remove subSamples', itemId)
-        const item = await SubSampleModel.findOne({ _id: itemId })
-        debug('Pre Remove subSamples', { item })
-        if (item) await item.remove()
-      })
-    )
   }
 })
+EntitySchema.pre('remove', async function() {
+  debug('Sample Pre Remove')
+  const SubSampleModel = require('./subSample.model')
+  const subSamples = await SubSampleModel.find({ sample: this._id })
+  await Promise.all(
+    subSamples.map(async item => {
+      debug('Remove subSamples', { item })
+      await item.remove()
+    })
+  )
+})
+
+EntitySchema.method({
+  transform() {
+    const transformed = {}
+    const fields = ['id', 'name', 'createdAt']
+
+    fields.forEach(field => {
+      transformed[field] = this[field]
+    })
+
+    return transformed
+  }
+})
+
+EntitySchema.statics = {
+  async list({ query }) {
+    debug('list', { query })
+    const filter = {}
+    if (query.name) filter.name = query.name
+    const limit = query.limit || 100
+    const page = query.page || 1
+    const sort = { createdAt: -1 }
+    return await this.paginate(filter, { page, limit, sort })
+  },
+  async get(id) {
+    try {
+      let sample
+
+      if (mongoose.Types.ObjectId.isValid(id)) {
+        sample = await this.findById(id).exec()
+      }
+      if (sample) {
+        return sample
+      }
+      throw new EntityNotFound({ entity: 'sample', id })
+    } catch (error) {
+      throw error
+    }
+  }
+}
+
+EntitySchema.plugin(timestamps)
+EntitySchema.plugin(mongoosePaginate)
 module.exports = mongoose.model('Sample', EntitySchema)

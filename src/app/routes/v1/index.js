@@ -14,7 +14,7 @@ expressDeliver(router)
 
 router.use('/status', StatusRoutes)
 router.use('/doc', SwaggerRoutes)
-router.use('/sample', SampleRoutes)
+router.use('/samples', SampleRoutes)
 router.use('/track', TrackRoutes)
 
 router.use('/users', userRoutes)

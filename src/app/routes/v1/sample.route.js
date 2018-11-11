@@ -1,12 +1,24 @@
 'use strict'
 const express = require('express')
+const validate = require('express-validation')
 const expressDeliver = require('express-deliver')
 const SubSampleRoutes = require('./subSample.route')
-const SampleController = require('../../controllers/sample.controller')
-const { ensureSampleExists } = require('../../middlewares/entities.middleware')
+const controller = require('../../controllers/sample.controller')
+const {
+  listSamples,
+  createSample,
+  replaceSample,
+  updateSample,
+  deleteSample
+} = require('../../validations/sample.validation')
 
 const router = express.Router()
 expressDeliver(router)
+
+/**
+ * Load user when API with userId route parameter is hit
+ */
+router.param('sampleId', controller.load)
 
 /**
  * @swagger
@@ -30,7 +42,7 @@ expressDeliver(router)
  *       422:
  *         $ref: '#/responses/ParamMisssing'
  */
-router.get('/', SampleController.getSamples)
+router.get('/', validate(listSamples), controller.list)
 
 /**
  * @swagger
@@ -60,7 +72,7 @@ router.get('/', SampleController.getSamples)
  *       422:
  *         $ref: '#/responses/ParamMisssing'
  */
-router.post('/', SampleController.addSample)
+router.post('/', validate(createSample), controller.create)
 
 /**
  * @swagger
@@ -86,20 +98,15 @@ router.post('/', SampleController.addSample)
  *       422:
  *         $ref: '#/responses/ParamMisssing'
  */
-router.get(
-  '/:sampleId',
-  ensureSampleExists,
-  // md_entities.ensureUserIsSampleManager,
-  SampleController.getSample
-)
+router.get('/:sampleId', controller.get)
 
 /**
  * @swagger
  *
  * /sample/{sampleId}:
  *   put:
- *     summary: Update sample
- *     description: Update sample
+ *     summary: Replace sample
+ *     description: Replace sample
  *     tags: [Sample]
  *     produces:
  *     - application/json
@@ -122,12 +129,38 @@ router.get(
  *       422:
  *         $ref: '#/responses/ParamMisssing'
  */
-router.put(
-  '/:sampleId',
-  ensureSampleExists,
-  // md_entities.ensureUserIsSampleManager,
-  SampleController.updateSample
-)
+router.put('/:sampleId', validate(replaceSample), controller.replace)
+
+/**
+ * @swagger
+ *
+ * /sample/{sampleId}:
+ *   patch:
+ *     summary: Update partial sample
+ *     description: Update partial sample
+ *     tags: [Sample]
+ *     produces:
+ *     - application/json
+ *     parameters:
+ *     - $ref: '#/parameters/sampleId'
+ *     - name: body
+ *       in: body
+ *       required: true
+ *       schema:
+ *         $ref: '#/definitions/SampleData'
+ *     security:
+ *       - ApiKeyAuth: []
+ *     responses:
+ *       200:
+ *         description: Return sample updated
+ *         schema:
+ *           $ref: '#/definitions/SampleResponse'
+ *       403:
+ *         $ref: '#/responses/AuthenticationFail'
+ *       422:
+ *         $ref: '#/responses/ParamMisssing'
+ */
+router.patch('/:sampleId', validate(updateSample), controller.update)
 
 /**
  * @swagger
@@ -153,18 +186,8 @@ router.put(
  *       422:
  *         $ref: '#/responses/ParamMisssing'
  */
-router.delete(
-  '/:sampleId',
-  ensureSampleExists,
-  // md_entities.ensureUserIsSampleManager,
-  SampleController.deleteSample
-)
+router.delete('/:sampleId', validate(deleteSample), controller.remove)
 
-router.use(
-  '/:sampleId/subSample',
-  ensureSampleExists,
-  // md_entities.ensureUserIsClientManager,
-  SubSampleRoutes
-)
+router.use('/:sampleId/subSamples', SubSampleRoutes)
 
 module.exports = router

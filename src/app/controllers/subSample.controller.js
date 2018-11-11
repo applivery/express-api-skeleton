@@ -1,42 +1,49 @@
 'use strict'
-const SubSampleService = require('../services/subSample.service')
+const service = require('../services/subSample.service')
+const httpStatus = require('http-status')
 const debug = require('debug')('AP:Controller:SubSample')
 
-async function getSubSamples(req, res) {
-  debug('getSubSamples')
-  return await SubSampleService.getSubSamples({ sample: req.entities.sample })
-}
-async function addSubSample(req, res) {
-  debug('addSubSample')
-  return await SubSampleService.addSubSample({
-    sample: req.entities.sample,
-    data: req.body
-  })
-}
-async function getSubSample(req, res) {
-  debug('getSubSample')
-  return req.entities.subSample
-}
-async function updateSubSample(req, res) {
-  debug('updateSubSample')
-  return await SubSampleService.updateSubSample({
-    sample: req.entities.sample,
-    subSample: req.entities.subSample,
-    data: req.body
-  })
-}
-async function deleteSubSample(req, res) {
-  debug('deleteSubSample')
-  return await SubSampleService.deleteSubSample({
-    sample: req.entities.sample,
-    subSample: req.entities.subSample
-  })
+exports.load = (req, res, next, id) => {
+  service
+    .get({ id })
+    .then(subSample => {
+      debug('subSample', subSample)
+      if (!subSample) throw new EntityNotFound({ entity: 'subSample', id: id })
+      req.locals = { subSample }
+      return next()
+    })
+    .catch(next)
 }
 
-module.exports = {
-  getSubSamples,
-  addSubSample,
-  getSubSample,
-  updateSubSample,
-  deleteSubSample
+exports.list = async (req, res) => {
+  const query = req.query
+  const { sample } = req.locals
+  const items = await service.list({ sample, query })
+  items.docs = items.docs.map(item => item.transform())
+  return items
+}
+exports.get = async (req, res) => req.locals.subSample.transform()
+exports.create = async (req, res) => {
+  const { sample } = req.locals
+  const newItem = await service.create({ sample, data: req.body })
+  res.status(httpStatus.CREATED)
+  return newItem.transform()
+}
+exports.replace = async (req, res) => {
+  const { subSample } = req.locals
+  const data = req.body
+  const newItem = await service.replace({ subSample, data })
+  return newItem.transform()
+}
+exports.update = async (req, res) => {
+  const { subSample } = req.locals
+  const data = req.body
+  const newItem = await service.update({ subSample, data })
+  return newItem.transform()
+}
+exports.remove = async (req, res) => {
+  const { subSample } = req.locals
+  await service.remove({ subSample })
+  // res.status(httpStatus.NO_CONTENT)
+  return { delete: 'OK' }
 }

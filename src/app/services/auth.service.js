@@ -4,6 +4,7 @@ const User = require('../models/user.model')
 const RefreshToken = require('../models/refreshToken.model')
 const moment = require('moment-timezone')
 const { jwtExpirationInterval } = require('../setup/vars')
+const debug = require('debug')('AP:Servives:Auth')
 
 function generateTokenResponse(user, accessToken) {
   const tokenType = 'Bearer'
@@ -70,6 +71,7 @@ exports.login = async ({ data }) => {
     const { user, accessToken } = await User.findAndGenerateToken(data)
     const token = generateTokenResponse(user, accessToken)
     const userTransformed = user.transform()
+    debug('LOGIN')
     return { token, user: userTransformed }
   } catch (error) {
     throw error

@@ -1,13 +1,23 @@
 'use strict'
 const express = require('express')
+const validate = require('express-validation')
 const expressDeliver = require('express-deliver')
-const SubSampleController = require('../../controllers/subSample.controller')
+const controller = require('../../controllers/subSample.controller')
 const {
-  ensureSubSampleExists
-} = require('../../middlewares/entities.middleware')
+  listSubSamples,
+  createSubSample,
+  replaceSubSample,
+  updateSubSample,
+  deleteSubSample
+} = require('../../validations/subSample.validation')
 
 const router = express.Router()
 expressDeliver(router)
+
+/**
+ * Load user when API with userId route parameter is hit
+ */
+router.param('subSampleId', controller.load)
 
 /**
  * @swagger
@@ -33,7 +43,7 @@ expressDeliver(router)
  *       422:
  *         $ref: '#/responses/ParamMisssing'
  */
-router.get('/', SubSampleController.getSubSamples)
+router.get('/', validate(listSubSamples), controller.list)
 
 /**
  * @swagger
@@ -64,7 +74,7 @@ router.get('/', SubSampleController.getSubSamples)
  *       422:
  *         $ref: '#/responses/ParamMisssing'
  */
-router.post('/', SubSampleController.addSubSample)
+router.post('/', validate(createSubSample), controller.create)
 
 /**
  * @swagger
@@ -91,12 +101,7 @@ router.post('/', SubSampleController.addSubSample)
  *       422:
  *         $ref: '#/responses/ParamMisssing'
  */
-router.get(
-  '/:subSampleId',
-  ensureSubSampleExists,
-  // md_entities.ensureUserIsSubSampleManager,
-  SubSampleController.getSubSample
-)
+router.get('/:subSampleId', controller.get)
 
 /**
  * @swagger
@@ -128,12 +133,39 @@ router.get(
  *       422:
  *         $ref: '#/responses/ParamMisssing'
  */
-router.put(
-  '/:subSampleId',
-  ensureSubSampleExists,
-  // md_entities.ensureUserIsSubSampleManager,
-  SubSampleController.updateSubSample
-)
+router.put('/:subSampleId', validate(replaceSubSample), controller.replace)
+
+/**
+ * @swagger
+ *
+ * /sample/{sampleId}/subSample/{subSampleId}:
+ *   patch:
+ *     summary: Update subSample
+ *     description: Update subSample
+ *     tags: [SubSample]
+ *     produces:
+ *     - application/json
+ *     parameters:
+ *     - $ref: '#/parameters/sampleId'
+ *     - $ref: '#/parameters/subSampleId'
+ *     - name: body
+ *       in: body
+ *       required: true
+ *       schema:
+ *         $ref: '#/definitions/SubSampleData'
+ *     security:
+ *       - ApiKeyAuth: []
+ *     responses:
+ *       200:
+ *         description: Return subSample updated
+ *         schema:
+ *           $ref: '#/definitions/SubSampleResponse'
+ *       403:
+ *         $ref: '#/responses/AuthenticationFail'
+ *       422:
+ *         $ref: '#/responses/ParamMisssing'
+ */
+router.patch('/:subSampleId', validate(updateSubSample), controller.update)
 
 /**
  * @swagger
@@ -159,11 +191,6 @@ router.put(
  *       422:
  *         $ref: '#/responses/ParamMisssing'
  */
-router.delete(
-  '/:subSampleId',
-  ensureSubSampleExists,
-  // md_entities.ensureUserIsSubSampleManager,
-  SubSampleController.deleteSubSample
-)
+router.delete('/:subSampleId', validate(deleteSubSample), controller.remove)
 
 module.exports = router

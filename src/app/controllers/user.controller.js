@@ -1,14 +1,13 @@
 const httpStatus = require('http-status')
 const service = require('../services/user.service')
-const debug = require('debug')('AP:Controller:User')
 const { EntityNotFound } = require('../exceptionPool')
+const debug = require('debug')('AP:Controller:User')
 
 /**
  * Load user and append to req.
  * @public
  */
 exports.load = (req, res, next, id) => {
-  debug('load', { id })
   service
     .get({ id })
     .then(user => {
@@ -18,6 +17,17 @@ exports.load = (req, res, next, id) => {
       return next()
     })
     .catch(next)
+}
+
+/**
+ * Get user list
+ * @public
+ */
+exports.list = async (req, res, next) => {
+  const query = req.query
+  const users = await service.list({ query })
+  users.docs = users.docs.map(item => item.transform())
+  return users
 }
 
 /**
@@ -37,9 +47,9 @@ exports.loggedIn = async (req, res) => req.user.transform()
  * @public
  */
 exports.create = async (req, res, next) => {
-  const savedUser = await service.create({ data: req.body })
+  const newItem = await service.create({ data: req.body })
   res.status(httpStatus.CREATED)
-  return savedUser.transform()
+  return newItem.transform()
 }
 
 /**
@@ -49,8 +59,8 @@ exports.create = async (req, res, next) => {
 exports.replace = async (req, res, next) => {
   const { user } = req.locals
   const data = req.body
-  const savedUser = await service.replace({ user, data })
-  return savedUser.transform()
+  const newItem = await service.replace({ user, data })
+  return newItem.transform()
 }
 
 /**
@@ -60,19 +70,8 @@ exports.replace = async (req, res, next) => {
 exports.update = async (req, res, next) => {
   const { user } = req.locals
   const data = req.body
-  const savedUser = await service.update({ user, data })
-  return savedUser.transform()
-}
-
-/**
- * Get user list
- * @public
- */
-exports.list = async (req, res, next) => {
-  const query = req.query
-  const users = await service.list({ query })
-  const transformedUsers = users.map(user => user.transform())
-  return transformedUsers
+  const newItem = await service.update({ user, data })
+  return newItem.transform()
 }
 
 /**
@@ -82,6 +81,6 @@ exports.list = async (req, res, next) => {
 exports.remove = async (req, res, next) => {
   const { user } = req.locals
   await service.remove({ user })
-  res.status(httpStatus.NO_CONTENT)
+  // res.status(httpStatus.NO_CONTENT)
   return { delete: 'OK' }
 }

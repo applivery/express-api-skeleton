@@ -1,11 +1,11 @@
 const mongoose = require('mongoose')
-const httpStatus = require('http-status')
-const { omitBy, isNil } = require('lodash')
 const bcrypt = require('bcryptjs')
 const moment = require('moment-timezone')
 const jwt = require('jwt-simple')
 const uuidv4 = require('uuid/v4')
 const APIError = require('../utils/APIError')
+const timestamps = require('mongoose-timestamp')
+const mongoosePaginate = require('mongoose-paginate-v2')
 const {
   EntityNotFound,
   ParamNotFound,
@@ -24,46 +24,41 @@ const roles = ['user', 'admin']
  * User Schema
  * @private
  */
-const userSchema = new mongoose.Schema(
-  {
-    email: {
-      type: String,
-      match: /^\S+@\S+\.\S+$/,
-      required: true,
-      unique: true,
-      trim: true,
-      lowercase: true
-    },
-    password: {
-      type: String,
-      required: true,
-      minlength: 6,
-      maxlength: 128
-    },
-    name: {
-      type: String,
-      maxlength: 128,
-      index: true,
-      trim: true
-    },
-    services: {
-      facebook: String,
-      google: String
-    },
-    role: {
-      type: String,
-      enum: roles,
-      default: 'user'
-    },
-    picture: {
-      type: String,
-      trim: true
-    }
+const userSchema = new mongoose.Schema({
+  email: {
+    type: String,
+    match: /^\S+@\S+\.\S+$/,
+    required: true,
+    unique: true,
+    trim: true,
+    lowercase: true
   },
-  {
-    timestamps: true
+  password: {
+    type: String,
+    required: true,
+    minlength: 6,
+    maxlength: 128
+  },
+  name: {
+    type: String,
+    maxlength: 128,
+    index: true,
+    trim: true
+  },
+  services: {
+    facebook: String,
+    google: String
+  },
+  role: {
+    type: String,
+    enum: roles,
+    default: 'user'
+  },
+  picture: {
+    type: String,
+    trim: true
   }
-)
+})
 
 /**
  * Add your
@@ -123,6 +118,18 @@ userSchema.method({
 userSchema.statics = {
   roles,
 
+  async list({ query }) {
+    debug('list', { query })
+    const filter = {}
+    if (query.name) filter.name = query.name
+    if (query.email) filter.email = query.email
+    if (query.role) filter.role = query.role
+    const limit = query.limit || 100
+    const page = query.page || 1
+    const sort = { createdAt: -1 }
+    return await this.paginate(filter, { page, limit, sort })
+  },
+
   /**
    * Get user
    *
@@ -181,23 +188,6 @@ userSchema.statics = {
   },
 
   /**
-   * List users in descending order of 'createdAt' timestamp.
-   *
-   * @param {number} skip - Number of users to be skipped.
-   * @param {number} limit - Limit number of users to be returned.
-   * @returns {Promise<User[]>}
-   */
-  list({ page = 1, perPage = 30, name, email, role }) {
-    const options = omitBy({ name, email, role }, isNil)
-
-    return this.find(options)
-      .sort({ createdAt: -1 })
-      .skip(perPage * (page - 1))
-      .limit(perPage)
-      .exec()
-  },
-
-  /**
    * Return new validation error
    * if error is a mongoose duplicate key error
    *
@@ -240,6 +230,9 @@ userSchema.statics = {
     })
   }
 }
+
+userSchema.plugin(timestamps)
+userSchema.plugin(mongoosePaginate)
 
 /**
  * @typedef User

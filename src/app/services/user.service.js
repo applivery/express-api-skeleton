@@ -4,6 +4,15 @@ const User = require('../models/user.model')
 const debug = require('debug')('AP:Service:User')
 
 /**
+ * Get user list
+ * @public
+ */
+exports.list = async ({ query }) => {
+  debug('list', { query })
+  return await User.list({ query })
+}
+
+/**
  * Load user and append to req.
  * @public
  */
@@ -20,8 +29,8 @@ exports.create = async ({ data }) => {
   debug('create', { data })
   try {
     const user = new User(data)
-    const savedUser = await user.save()
-    return savedUser
+    const savedItem = await user.save()
+    return savedItem
   } catch (err) {
     throw User.checkDuplicateEmail(err)
   }
@@ -39,8 +48,8 @@ exports.replace = async ({ user, data }) => {
     const newUserObject = omit(newUser.toObject(), '_id', ommitRole)
 
     await user.update(newUserObject, { override: true, upsert: true })
-    const savedUser = await User.findById(user._id)
-    return savedUser
+    const savedItem = await User.findById(user._id)
+    return savedItem
   } catch (err) {
     throw User.checkDuplicateEmail(err)
   }
@@ -55,24 +64,11 @@ exports.update = async ({ user, data }) => {
   try {
     const ommitRole = user.role !== 'admin' ? 'role' : ''
     const updatedUser = omit(data, ommitRole)
-    const newUser = Object.assign(user, updatedUser)
-    const savedUser = await newUser.save()
-    return savedUser
+    const newItem = Object.assign(user, updatedUser)
+    const savedItem = await newItem.save()
+    return savedItem
   } catch (err) {
     throw User.checkDuplicateEmail(err)
-  }
-}
-
-/**
- * Get user list
- * @public
- */
-exports.list = async ({ query }) => {
-  debug('list', { query })
-  try {
-    return await User.list(query)
-  } catch (error) {
-    throw error
   }
 }
 

@@ -26,7 +26,7 @@ const exceptionPool = new ExceptionPool({
   },
   AuthForbidden: {
     code: 4003,
-    message: 'Forbidden',
+    message: 'Forbidden - You are not allowed to perform this action',
     statusCode: 403
   },
   InvalidToken: {

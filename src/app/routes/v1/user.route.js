@@ -11,7 +11,8 @@ const {
   listUsers,
   createUser,
   replaceUser,
-  updateUser
+  updateUser,
+  deleteUser
 } = require('../../validations/user.validation')
 
 const router = express.Router()
@@ -131,8 +132,8 @@ router.get('/:userId', authorize(LOGGED_USER), controller.get)
  *
  * /users/{userId}:
  *   put:
- *     summary: Update user
- *     description: Update user
+ *     summary: Replace user
+ *     description: Replace user
  *     tags: [User]
  *     produces:
  *     - application/json
@@ -167,8 +168,8 @@ router.put(
  *
  * /users/{userId}:
  *   patch:
- *     summary: Update user
- *     description: Update user
+ *     summary: Update partial user
+ *     description: Update partial user
  *     tags: [User]
  *     produces:
  *     - application/json
@@ -222,6 +223,11 @@ router.patch(
  *       422:
  *         $ref: '#/responses/ParamMisssing'
  */
-router.delete('/:userId', authorize(LOGGED_USER), controller.remove)
+router.delete(
+  '/:userId',
+  authorize(LOGGED_USER),
+  validate(deleteUser),
+  controller.remove
+)
 
 module.exports = router

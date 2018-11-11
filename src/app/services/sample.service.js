@@ -1,42 +1,37 @@
 'use strict'
-const SampleModel = require('../models/sample.model')
+const Sample = require('../models/sample.model')
+const { omit } = require('lodash')
 const debug = require('debug')('AP:Service:Sample')
 
-async function getSamples({ limit }) {
-  debug('getSamples', { limit })
-  const query = {}
-  const sort = { _id: -1 }
-  if (!limit) limit = 100
-  return await SampleModel.paginate(query, { page: 1, limit, sort })
+exports.list = async ({ query }) => {
+  debug('list', { query })
+  return await Sample.list({ query })
 }
-async function addSample({ data }) {
-  debug('addSample', { data })
-  const item = new SampleModel(data)
-  await item.save()
-  return item
+exports.get = async ({ id }) => {
+  debug('get', { id })
+  return await Sample.get(id)
 }
-async function getSample({ id }) {
-  debug('getSample', { id })
-  return await SampleModel.findOne({ _id: id })
+exports.create = async ({ data }) => {
+  debug('create', { data })
+  const item = new Sample(data)
+  const savedItem = await item.save()
+  return savedItem
 }
-async function updateSample({ sample, data }) {
-  debug('updateSample', { sample, data })
-  const query = { _id: sample._id }
-  const options = { new: true }
-  delete data.createdAt
-  const item = await SampleModel.findOneAndUpdate(query, data, options)
-  return item
+exports.replace = async ({ sample, data }) => {
+  debug('replace', { sample })
+  const newSample = new Sample(data)
+  const newSampleObject = omit(newSample.toObject(), '_id')
+  await sample.update(newSampleObject, { override: true, upsert: true })
+  const savedItem = await Sample.findById(sample._id)
+  return savedItem
 }
-async function deleteSample({ sample }) {
-  debug('deleteSample', { sample })
-  await sample.remove()
-  return {}
+exports.update = async ({ sample, data }) => {
+  debug('update', { sample, data })
+  const newItem = Object.assign(sample, data)
+  const savedItem = await newItem.save()
+  return savedItem
 }
-
-module.exports = {
-  getSamples,
-  addSample,
-  getSample,
-  updateSample,
-  deleteSample
+exports.remove = async ({ sample }) => {
+  debug('remove', { sample })
+  return await sample.remove()
 }

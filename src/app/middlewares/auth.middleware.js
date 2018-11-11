@@ -29,10 +29,8 @@ const handleJWT = (req, res, next, roles) => async (err, user, info) => {
   } catch (e) {
     return next(new NoAuthToken())
   }
-  debug('handleJWT-5')
 
   if (roles === LOGGED_USER) {
-    debug('handleJWT-6')
     if (user.role !== 'admin' && req.params.userId !== user._id.toString()) {
       return next(new AuthForbidden())
     }
